@@ -91,47 +91,36 @@ app.get("/delete/:id", (req, res) => {
     });
 });
 
+// Route pour la modification des personnages
 app.get("/edit/:id", (req, res) => {
     const id = req.params.id;
-
-    const query = /*sql*/ `
-      SELECT p.*, e.nom as nom_equipe 
-      FROM personnages as p 
-      JOIN equipes AS e 
-      ON p.equipe_id = e.id
-      WHERE p.id = ? 
-      `;
-
+    const query = `
+    SELECT * FROM personnages WHERE id=?
+    `;
+    const queryEquipe = `SELECT * FROM equipes`;
     db.query(query, [id], (err, result) => {
         if (err) throw err;
-
-        const queryEquipes = /*sql*/` 
-        SELECT * FROM equipes
-        `;
-
-        db.query(queryEquipes, (err, resultEquipes) => {
+        db.query(queryEquipe, [id], (err, resultEquipe) => {
             if (err) throw err;
+            res.render("edit", { personnage: result[0], equipes: resultEquipe });
+        })
 
-            res.render("edit", {
-                personnage: result[0],
-                equipes: resultEquipes
-            });
-        });
     });
-});
+})
 
 app.post("/edit/:id", (req, res) => {
     const id = req.params.id;
     const { nom, photo, description, equipe_id } = req.body;
 
     const query = /*sql*/ `
-      UPDATE personnages 
-      SET nom = ?, photo = ?, description = ?, equipe_id = ? 
-      WHERE id = ?
-      `;
+     UPDATE personnages 
+     SET nom=?, photo=?, description=?, equipe_id=?
+     WHERE id=?
+     `;
 
     db.query(query, [nom, photo, description, equipe_id, id], (err, result) => {
         if (err) throw err;
         res.redirect("/");
     });
 });
+
