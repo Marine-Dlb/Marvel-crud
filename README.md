@@ -90,7 +90,7 @@ Voici les instructions pour installer un serveur local MySQL (MariaDB) sur un po
 
 5. Insérer des données de test
    - Sélectionnez la table "equipes" et cliquez sur l'onglet "Insérer".
-   - Entrez des données pour une ou
+   - Entrez des données pour une ou plusieurs équipes
 
 ## Étape 3 : Connexion à la base de données
 - Créez un fichier database.js dans le dossier du projet.
